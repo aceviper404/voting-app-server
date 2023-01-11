@@ -12,7 +12,7 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-console.log(process.env);
+
 // Define the schema for the votes collection
 const voteSchema = new mongoose.Schema({
   name: String,
