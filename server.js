@@ -2,11 +2,13 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+require('dotenv').config();
+
 const app = express();
 
 // Connect to the MongoDB database
 mongoose.set("strictQuery", false);
-mongoose.connect('mongodb+srv://root:root@cluster0.bofrn.mongodb.net/test', {
+mongoose.connect('mongodb+srv://'+process.env.MONGO_USERNAME+':'+process.env.MONGO_PASSWORD+'@cluster0.bofrn.mongodb.net/test', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
