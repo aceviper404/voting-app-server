@@ -8,7 +8,7 @@ const app = express();
 
 // Connect to the MongoDB database
 mongoose.set("strictQuery", false);
-mongoose.connect('mongodb+srv://'+process.env.MONGO_NAME+':'+process.env.MONGO_PASSWORD+'@cluster0.bofrn.mongodb.net/test', {
+mongoose.connect('mongodb://'+process.env.MONGO_NAME+':'+process.env.MONGO_PASSWORD+'@cluster0.bofrn.mongodb.net/test', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
