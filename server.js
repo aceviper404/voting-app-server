@@ -12,15 +12,20 @@ mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-console.log(process.env);
+
 // Define the schema for the votes collection
 const voteSchema = new mongoose.Schema({
   name: String,
   votes: { type: Number, default: 1 },
 });
 
+const codeSchema = new mongoose.Schema({
+  code: { type: String, unique: true },
+});
+
 // Create the model for the votes collection
 const Vote = mongoose.model('Vote', voteSchema);
+const Code = mongoose.model('Code', codeSchema);
 
 // Parse the request body as JSON
 app.use(bodyParser.json());
@@ -58,6 +63,26 @@ app.post('/vote', async (req, res) => {
   }
 });
 
+app.get('/codeExists/:code', async (req, res) => {
+  try {
+    const code = req.params.code;
+    console.log(code);
+    const foundCode = await Code.findOne({ code: code });
+    if (foundCode) {
+      res.status(200).send(true);
+      return res;
+    } else {
+      const newCode = new Code({ code: code});
+      await newCode.save();
+      res.status(200).send(false);
+      return res;
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+    return res;
+  }
+});
 
 // Start the server
 const port = process.env.PORT || 3000;
