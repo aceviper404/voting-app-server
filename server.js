@@ -34,6 +34,7 @@ app.use(bodyParser.json());
 app.post('/vote', async (req, res) => {
   try {
     const names = req.body.names;
+    //console.log(names);
     // Check if the name exists in the database
     if (!Array.isArray(names)) {
         res.status(400).send({ error: 'Invalid request body' });
@@ -47,12 +48,12 @@ app.post('/vote', async (req, res) => {
           // If the name exists, update the votes count
           vote.votes += 1;
           await vote.save();
-          console.log(`count saved: ${vote}`);
+          //console.log(`count saved: ${vote}`);
         } else {
           // If the name does not exist, create a new record
           const newVote = new Vote({ name: name.toLowerCase() });
           await newVote.save();
-          console.log(`new name saved in DB: ${newVote}`);
+          //console.log(`new name saved in DB: ${newVote}`);
         }
       }
 
@@ -66,7 +67,7 @@ app.post('/vote', async (req, res) => {
 app.get('/codeExists/:code', async (req, res) => {
   try {
     const code = req.params.code;
-    console.log(code);
+    //console.log(code);
     const foundCode = await Code.findOne({ code: code });
     if (foundCode) {
       res.status(200).send(true);
