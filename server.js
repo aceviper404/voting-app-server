@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const socketio = require('socket.io');
+const cors = require('cors');
 
 require('dotenv').config();
 
@@ -85,8 +87,33 @@ app.get('/codeExists/:code', async (req, res) => {
   }
 });
 
+app.use(cors());
+
 // Start the server
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
+
+const io = socketio(server,{
+  cors:{
+    origins: ["*"],
+    handlePreFlightRequest: (req, res) =>{
+      res.writeHead(200, {
+        "Access-Control-Allow-Origin":"*",
+        "Access-Control-Allow-Methods":"GET,POST",
+        "Access-Control-Allow-Headers":"my-custom-header",
+        "Access-Control-Allow-Credentials":true,
+      });
+      res.end();
+    }
+  }
+});
+
+// Listen for connections
+io.on('connection', (socket) => {
+  setInterval(async () => {
+    const data = await Vote.find().sort({ votes: -1 });
+    socket.emit("data", data);
+  }, 500);
+  });
