@@ -115,5 +115,5 @@ io.on('connection', (socket) => {
   setInterval(async () => {
     const data = await Vote.find().sort({ votes: -1 });
     socket.emit("data", data);
-  }, 1000);
+  }, 2000);
   });
