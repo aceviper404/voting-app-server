@@ -6,7 +6,6 @@ const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const axios = require('axios');
 
 require('dotenv').config();
 
