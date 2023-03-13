@@ -6,7 +6,6 @@ const cors = require('cors');
 const compression = require('compression');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const axios = require('axios');
 
 require('dotenv').config();
 
@@ -110,28 +109,28 @@ app.post('/vote', async (req, res) => {
   }
 });
 
-// app.get('/codeExists/:code', async (req, res) => {
-//   try {
-//     const code = req.params.code;
-//     const foundCode = await Code.findOne({ code: code });
-//     if (foundCode) {
-//       res.status(200).send(true);
-//       return res;
-//     } else {
-//       const newCode = new Code({ code: code});
-//       await newCode.save();
-//       res.status(200).send(false);
-//       return res;
-//     }
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send(error);
-//     return res;
-//   }
-// });
+app.get('/codeExists/:code', async (req, res) => {
+  try {
+    const code = req.params.code;
+    const foundCode = await Code.findOne({ code: code });
+    if (foundCode) {
+      res.status(200).send(true);
+      return res;
+    } else {
+      const newCode = new Code({ code: code});
+      await newCode.save();
+      res.status(200).send(false);
+      return res;
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error);
+    return res;
+  }
+});
 
-// Use CORS
-//app.use(cors());
+//Use CORS
+app.use(cors());
 
 // Create a worker to consume messages from the RabbitMQ queue
 amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
