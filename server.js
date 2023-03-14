@@ -68,7 +68,7 @@ app.post('/vote', async (req, res) => {
     }
 
     // Publish the request to the RabbitMQ queue
-    amqp.connect(process.env.RABBITMQ_URI, function (error0, connection) {
+    amqp.connect(process.env.CLOUDAMQP_URL, function (error0, connection) {
       if (error0) {
         throw error0;
       }
