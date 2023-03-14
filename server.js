@@ -67,15 +67,6 @@ app.post('/vote', async (req, res) => {
       return;
     }
 
-        // Check if the code exists
-        const code = req.query.code;
-        const response = await axios.get(`http://localhost:3000/codeExists/${code}`);
-        const codeExists = response.data;
-        if (!codeExists) {
-          res.status(400).send({ error: 'Invalid code' });
-          return;
-        }
-
     // Publish the request to the RabbitMQ queue
     amqp.connect(process.env.RABBITMQ_URI, function (error0, connection) {
       if (error0) {
