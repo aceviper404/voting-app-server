@@ -125,7 +125,7 @@ app.get('/codeExists/:code', async (req, res) => {
 app.use(cors());
 
 // Create a worker to consume messages from the RabbitMQ queue
-amqp.connect(process.env.RABBITMQ_URI, function(error0, connection) {
+amqp.connect(process.env.CLOUDAMQP_URL, function(error0, connection) {
   if (error0) {
     throw error0;
   }
