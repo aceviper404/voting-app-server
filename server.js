@@ -91,7 +91,7 @@ app.post('/vote', async (req, res) => {
 
       setTimeout(function () {
         connection.close();
-      }, 500);
+      }, 5000);
     });
 
     res.send({ message: 'Votes saved successfully' });
