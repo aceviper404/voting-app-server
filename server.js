@@ -86,7 +86,7 @@ app.post('/vote', async (req, res) => {
         });
 
         channel.sendToQueue(queue, Buffer.from(JSON.stringify(msg)));
-        console.log("Sent %s", JSON.stringify(msg));
+        //console.log("Sent %s", JSON.stringify(msg));
       });
 
       setTimeout(function () {
@@ -144,7 +144,7 @@ amqp.connect(process.env.CLOUDAMQP_URL, function(error0, connection) {
 
     channel.consume(queue, async function(msg) {
       const data = JSON.parse(msg.content.toString());
-      console.log("Received %s", msg.content.toString());
+      //console.log("Received %s", msg.content.toString());
     
       try {
         const names = data.names;
