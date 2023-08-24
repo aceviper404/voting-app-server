@@ -8,7 +8,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const path = require('path');
 
-require('dotenv').config({ path: path.resolve(__dirname, './.env') });
+//require('dotenv').config({ path: path.resolve(__dirname, './.env') });
 
 const app = express();
 
@@ -25,7 +25,7 @@ app.use(cors())
 
 // Connect to the MongoDB database with connection pooling
 mongoose.set("strictQuery", false);
-mongoose.connect(process.env.MONGO_URI, {
+mongoose.connect('mongodb://127.0.0.1:27017/test', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   maxPoolSize: 200,
@@ -68,7 +68,7 @@ app.post('/vote', async (req, res) => {
     }
 
     // Publish the request to the RabbitMQ queue
-    amqp.connect(process.env.CLOUDAMQP_URL, function (error0, connection) {
+    amqp.connect("amqp://localhost:5672", function (error0, connection) {
       if (error0) {
         throw error0;
       }
@@ -125,7 +125,7 @@ app.get('/codeExists/:code', async (req, res) => {
 app.use(cors());
 
 // Create a worker to consume messages from the RabbitMQ queue
-amqp.connect(process.env.CLOUDAMQP_URL, function(error0, connection) {
+amqp.connect("amqp://localhost:5672", function(error0, connection) {
   if (error0) {
     throw error0;
   }
@@ -170,15 +170,15 @@ amqp.connect(process.env.CLOUDAMQP_URL, function(error0, connection) {
 });
 
 // Handle the GET request to get the vote counts
-app.get('/votes', async (req, res) => {
-  try {
-    const votes = await Vote.find().sort({ votes: -1 });
-    res.send(votes);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send(error);
-  }
-});
+// app.get('/votes', async (req, res) => {
+//   try {
+//     const votes = await Vote.find().sort({ votes: -1 });
+//     res.send(votes);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send(error);
+//   }
+// });
 
 // Start the server
 app.listen(process.env.PORT||3000, () => {
